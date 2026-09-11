@@ -17,7 +17,9 @@ function updateButton() {
 async function respond(text) {
 	response = "I hear you. Tell me more.";
 	msg = sendMessage("", false);
+	msg.setAttribute("style", "font-family: symbols;");
 	await thinking(msg);
+	msg.setAttribute("style", "font-family: mspace;");
 	typeText(response, msg);
 }
 
@@ -36,7 +38,7 @@ function sendMessage(text, user) {
 }
 
 async function thinking(parent) {
-	bubbles = ["Ooo", "oOo", "ooO"];
+	bubbles = ["●○○", "○●○", "○○●"];
 	for (var i = 0; i <= 11; i++) {
 		parent.textContent = bubbles[i%bubbles.length];
 		await sleep(300);
