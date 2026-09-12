@@ -2,7 +2,9 @@ const button = document.querySelector("button");
 const chatDisplay = document.querySelector("#chat-display");
 const chatInput = document.querySelector("textarea")
 
+botSays("Hello. I am Socratic GPT! How can I help you today?");
 button.addEventListener("click", updateButton);
+let contextRequired = true;
 
 function updateButton() {
 	if(!chatInput.value) {
@@ -10,17 +12,28 @@ function updateButton() {
 	}
 	text = chatInput.value;
 	sendMessage(text, true);
-	respond(text);
+	botSays(generateResponse(text));
 	chatInput.value="";
 }
 
-async function respond(text) {
-	response = "I hear you. Tell me more.";
-	msg = sendMessage("", false);
+function generateResponse(text) {
+	if(text.length >= 50)
+		contextRequired = false;
+
+	if(contextRequired)
+		return "I hear you. Please provide additional context so I know exactly how to assist you.";
+	else if(text.length > 10)
+		return "Thank you for explaining yourself. This is a little chaotic. Can you pinpoint the exact issue?";
+	else
+		return "Thank you for breaking it down. But it seems like you have already arrived at the solution yourself.";
+}
+
+async function botSays(text) {
+	msg = sendMessage("○○○", false);
 	msg.setAttribute("style", "font-family: symbols;");
 	await thinking(msg);
 	msg.setAttribute("style", "font-family: mspace;");
-	typeText(response, msg);
+	typeText(text, msg);
 }
 
 function sendMessage(text, user) {
